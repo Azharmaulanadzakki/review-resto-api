@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -8,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthenticationController extends Controller
 {
-    public function login (Request $request)
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|string|email',
@@ -16,26 +17,25 @@ class AuthenticationController extends Controller
             'device_name' => 'required|string',
         ]);
 
-
         $user = User::whereEmail($request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessage([
-                'email' => 'Alamat Email atau Password Kamu salah',
+            throw ValidationException::withMessages([
+                'email' => 'Alamat email atau password salah',
             ]);
         }
 
-
-        return[
-             
-            'access_token' => $user->createToken($request->device_name)-> plainTextToken,
+        return [
+            'access_token' => $user->createToken($request->device_name)->plainTextToken,
             'user' => $user,
-
         ];
     }
 
+    public function logout(Request $request)
+    {
+        return $request->user()->currentAccessToken()->delete();
+    }
 
-
-    public function register (Request $request)
+    public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -47,22 +47,11 @@ class AuthenticationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-        ]);  
+        ]);
     }
 
-
-
-    public function profile (Request $request)
+    public function profile(Request $request)
     {
         return $request->user();
     }
-
-
-
-    public function logout (Request $request)
-    {
-        return $request->user()->currentAccessToken()->delete();
-    }
-
-
 }

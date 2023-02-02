@@ -35,7 +35,7 @@ class Restotest extends TestCase
 
         $this->postJson(route('restos.store'), $data)->assertCreated();
     }
-
+ 
 
     public function test_user_can_show_resto()
     {
