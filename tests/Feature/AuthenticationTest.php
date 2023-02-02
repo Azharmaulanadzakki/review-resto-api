@@ -59,7 +59,7 @@ class AuthenticationTest extends TestCase
 
         Sanctum::actingAs($user);
 
-
+        
         $this->getJson(route('auth.profile'))
         ->assertOk()
         ->assertJsonFragment(['email' => $user->email]);
