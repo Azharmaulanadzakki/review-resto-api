@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Resto;
 use App\Http\Requests\StoreRestoRequest;
 use App\Http\Requests\UpdateRestoRequest;
+use App\Models\Resto;
 
 class RestoController extends Controller
 {
@@ -16,16 +16,6 @@ class RestoController extends Controller
     public function index()
     {
         return Resto::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
     }
 
     /**
@@ -61,10 +51,9 @@ class RestoController extends Controller
      */
     public function update(UpdateRestoRequest $request, Resto $resto)
     {
-         $resto->update($request->validated());
+        $resto->update($request->validated());
 
-         
-         return $resto->refresh();
+        return $resto->refresh();
     }
 
     /**
@@ -78,5 +67,10 @@ class RestoController extends Controller
         $resto->delete();
 
         return $resto;
+    }
+
+    public function reviews(Resto $resto)
+    {
+        return $resto->reviews->load('user');
     }
 }
