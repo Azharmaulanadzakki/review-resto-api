@@ -6,6 +6,7 @@ use App\Http\Controllers\RestoController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AuthenticationController;
 
+
 Route::post('/auth/login', [AuthenticationController::class, 'login'])->name('auth.login');
 Route::post('/auth/register', [AuthenticationController::class, 'register'])->name('auth.register');
 
